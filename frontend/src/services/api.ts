@@ -171,3 +171,104 @@ export const reportsAPI = {
   sales: (params?: any) => API.get('/reports/sales', { params }),
   summary: () => API.get('/reports/summary'),
 }
+
+export const shippingAPI = {
+  list: () => API.get('/shipping'),
+  create: (data: any) => API.post('/shipping', data),
+  updateStatus: (id: number, status: string) => API.put(`/shipping/${id}/status?status=${status}`),
+  persons: {
+    list: () => API.get('/shipping/persons'),
+    create: (data: any) => API.post('/shipping/persons', data),
+  },
+}
+
+export const emailAPI = {
+  config: {
+    list: () => API.get('/email/config'),
+    create: (data: any) => API.post('/email/config', data),
+  },
+  templates: {
+    list: () => API.get('/email/templates'),
+    create: (data: any) => API.post('/email/templates', data),
+  },
+  send: (data: any) => API.post('/email/send', data),
+  logs: () => API.get('/email/logs'),
+}
+
+export const leavesAPI = {
+  list: () => API.get('/leaves'),
+  create: (data: any) => API.post('/leaves', data),
+  approve: (id: number, status: string) => API.put(`/leaves/${id}/status?status=${status}`),
+  types: {
+    list: () => API.get('/leaves/types'),
+    create: (data: any) => API.post('/leaves/types', data),
+  },
+}
+
+export const payrollAPI = {
+  list: (params?: any) => API.get('/payroll', { params }),
+  create: (data: any) => API.post('/payroll', data),
+  bonuses: {
+    create: (data: any) => API.post('/payroll/bonuses', data),
+  },
+  deductions: {
+    create: (data: any) => API.post('/payroll/deductions', data),
+  },
+}
+
+export const paymentsAPI = {
+  gateways: {
+    list: () => API.get('/payments/gateways'),
+    create: (data: any) => API.post('/payments/gateways', data),
+  },
+  transactions: {
+    list: () => API.get('/payments/transactions'),
+  },
+}
+
+export const assetsAPI = {
+  list: () => API.get('/assets'),
+  create: (data: any) => API.post('/assets', data),
+  categories: {
+    list: () => API.get('/assets/categories'),
+    create: (data: any) => API.post('/assets/categories', data),
+  },
+  maintenance: (data: any) => API.post('/assets/maintenance', data),
+}
+
+export const budgetsAPI = {
+  list: (params?: any) => API.get('/budgets', { params }),
+  create: (data: any) => API.post('/budgets', data),
+}
+
+export const branchesAPI = {
+  list: () => API.get('/branches'),
+  create: (data: any) => API.post('/branches', data),
+}
+
+export const loyaltyAPI = {
+  tiers: {
+    list: () => API.get('/loyalty/tiers'),
+    create: (data: any) => API.post('/loyalty/tiers', data),
+  },
+  customer: (id: number) => API.get(`/loyalty/customers/${id}`),
+  coupons: {
+    list: () => API.get('/loyalty/coupons'),
+    create: (data: any) => API.post('/loyalty/coupons', data),
+  },
+}
+
+export const importExportAPI = {
+  export: (entity: string, format?: string) => API.get(`/import-export/export/${entity}?format=${format || 'csv'}`, { responseType: 'blob' }),
+}
+
+export const printAPI = {
+  invoice: (id: number) => API.get(`/print/invoice/${id}`, { responseType: 'blob' }),
+  barcode: (id: number) => API.get(`/print/barcode/${id}`, { responseType: 'blob' }),
+}
+
+export const portalAPI = {
+  customer: (phone: string) => API.get(`/portal/customer/${phone}`),
+  invoices: (phone: string) => API.get(`/portal/customer/${phone}/invoices`),
+  loyalty: (phone: string) => API.get(`/portal/customer/${phone}/loyalty`),
+}

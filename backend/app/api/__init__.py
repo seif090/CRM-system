@@ -17,25 +17,26 @@ from .audit import router as audit_router
 from .permissions import router as permissions_router
 from .pos import router as pos_router
 from .reports import router as reports_router
+from .shipping import router as shipping_router
+from .email_integration import router as email_router
+from .leaves import router as leaves_router
+from .payroll import router as payroll_router
+from .payments import router as payments_router
+from .assets import router as assets_router
+from .budgets import router as budgets_router
+from .branches import router as branches_router
+from .loyalty import router as loyalty_router
+from .import_export import router as import_export_router
+from .printing import router as printing_router
+from .customer_portal import router as portal_router
 
 routers = [
-    auth_router,
-    customers_router,
-    products_router,
-    sales_router,
-    purchases_router,
-    employees_router,
-    accounting_router,
-    dashboard_router,
-    whatsapp_router,
-    ai_router,
-    expenses_router,
-    tasks_router,
-    returns_router,
-    inventory_router,
-    notifications_router,
-    audit_router,
-    permissions_router,
-    pos_router,
-    reports_router,
+    auth_router, customers_router, products_router, sales_router,
+    purchases_router, employees_router, accounting_router, dashboard_router,
+    whatsapp_router, ai_router, expenses_router, tasks_router,
+    returns_router, inventory_router, notifications_router, audit_router,
+    permissions_router, pos_router, reports_router,
+    shipping_router, email_router, leaves_router, payroll_router,
+    payments_router, assets_router, budgets_router, branches_router,
+    loyalty_router, import_export_router, printing_router, portal_router,
 ]

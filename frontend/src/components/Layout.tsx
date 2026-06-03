@@ -24,6 +24,18 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import HistoryIcon from '@mui/icons-material/History'
 import SecurityIcon from '@mui/icons-material/Security'
 import PointOfSaleIcon2 from '@mui/icons-material/PointOfSale'
+import LocalShippingIcon from '@mui/icons-material/LocalShipping'
+import EmailIcon from '@mui/icons-material/Email'
+import BeachAccessIcon from '@mui/icons-material/BeachAccess'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import PaymentIcon from '@mui/icons-material/Payment'
+import BusinessIcon from '@mui/icons-material/Business'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import StorefrontIcon from '@mui/icons-material/Storefront'
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import PrintIcon from '@mui/icons-material/Print'
+import PersonIcon from '@mui/icons-material/Person'
 import { notificationsAPI } from '../services/api'
 
 const drawerWidth = 280
@@ -45,6 +57,18 @@ const menuItems = [
   { text: 'الذكاء الاصطناعي', icon: <SmartToyIcon />, path: '/ai' },
   { text: 'الإشعارات', icon: <NotificationsIcon />, path: '/notifications' },
   { text: 'سجل النشاطات', icon: <HistoryIcon />, path: '/audit' },
+  { text: 'الشحن والتوصيل', icon: <LocalShippingIcon />, path: '/shipping' },
+  { text: 'البريد الإلكتروني', icon: <EmailIcon />, path: '/email' },
+  { text: 'الإجازات', icon: <BeachAccessIcon />, path: '/leaves' },
+  { text: 'الرواتب', icon: <AttachMoneyIcon />, path: '/payroll' },
+  { text: 'المدفوعات الإلكترونية', icon: <PaymentIcon />, path: '/payments' },
+  { text: 'الأصول', icon: <BusinessIcon />, path: '/assets' },
+  { text: 'الميزانيات', icon: <AccountBalanceWalletIcon />, path: '/budgets' },
+  { text: 'الفروع', icon: <StorefrontIcon />, path: '/branches' },
+  { text: 'ولاء العملاء', icon: <CardGiftcardIcon />, path: '/loyalty' },
+  { text: 'استيراد/تصدير', icon: <FileDownloadIcon />, path: '/import-export' },
+  { text: 'طباعة', icon: <PrintIcon />, path: '/print' },
+  { text: 'بوابة العميل', icon: <PersonIcon />, path: '/portal' },
   { text: 'الصلاحيات', icon: <SecurityIcon />, path: '/settings' },
 ]
 

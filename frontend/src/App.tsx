@@ -17,6 +17,18 @@ import AIConfigPage from './pages/AIConfigPage'
 import NotificationsPage from './pages/NotificationsPage'
 import AuditPage from './pages/AuditPage'
 import SettingsPage from './pages/SettingsPage'
+import ShippingPage from './pages/ShippingPage'
+import EmailPage from './pages/EmailPage'
+import LeavesPage from './pages/LeavesPage'
+import PayrollPage from './pages/PayrollPage'
+import PaymentsPage from './pages/PaymentsPage'
+import AssetsPage from './pages/AssetsPage'
+import BudgetsPage from './pages/BudgetsPage'
+import BranchesPage from './pages/BranchesPage'
+import LoyaltyPage from './pages/LoyaltyPage'
+import ImportExportPage from './pages/ImportExportPage'
+import PrintPage from './pages/PrintPage'
+import PortalPage from './pages/PortalPage'
 import Layout from './components/Layout'
 import { useAuth } from './utils/auth'
 
@@ -46,6 +58,18 @@ export default function App() {
       <Route path="/notifications" element={<PrivateRoute><NotificationsPage /></PrivateRoute>} />
       <Route path="/audit" element={<PrivateRoute><AuditPage /></PrivateRoute>} />
       <Route path="/settings" element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
+      <Route path="/shipping" element={<PrivateRoute><ShippingPage /></PrivateRoute>} />
+      <Route path="/email" element={<PrivateRoute><EmailPage /></PrivateRoute>} />
+      <Route path="/leaves" element={<PrivateRoute><LeavesPage /></PrivateRoute>} />
+      <Route path="/payroll" element={<PrivateRoute><PayrollPage /></PrivateRoute>} />
+      <Route path="/payments" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
+      <Route path="/assets" element={<PrivateRoute><AssetsPage /></PrivateRoute>} />
+      <Route path="/budgets" element={<PrivateRoute><BudgetsPage /></PrivateRoute>} />
+      <Route path="/branches" element={<PrivateRoute><BranchesPage /></PrivateRoute>} />
+      <Route path="/loyalty" element={<PrivateRoute><LoyaltyPage /></PrivateRoute>} />
+      <Route path="/import-export" element={<PrivateRoute><ImportExportPage /></PrivateRoute>} />
+      <Route path="/print" element={<PrivateRoute><PrintPage /></PrivateRoute>} />
+      <Route path="/portal" element={<PrivateRoute><PortalPage /></PrivateRoute>} />
     </Routes>
   )
 }
