@@ -1,0 +1,10 @@
+{
+  "name": "ai-service",
+  "version": "1.0.0",
+  "description": "AI service for auto-replies",
+  "main": "index.js",
+  "scripts": {
+    "start": "python gemini_service.py",
+    "dev": "python gemini_service.py"
+  }
+}
