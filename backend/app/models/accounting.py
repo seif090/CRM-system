@@ -8,7 +8,7 @@ class Account(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
     code = Column(String(50), unique=True, nullable=False)
-    type = Column(String(50), nullable=False)
+    account_type = Column(String(50), nullable=False)
     parent_id = Column(Integer, nullable=True)
     balance = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

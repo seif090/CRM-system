@@ -7,7 +7,7 @@ class NotificationResponse(BaseModel):
     id: int
     title: str
     message: str
-    type: str
+    notification_type: str
     is_read: int
     created_at: Optional[datetime] = None
 
@@ -19,5 +19,5 @@ class NotificationTemplateCreate(BaseModel):
     name: str
     title_template: str
     message_template: str
-    type: str = "info"
+    notification_type: str = "info"
     channel: str = "in_app"

@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from ..core.database import get_db
 from ..core.dependencies import get_current_user
 from ..models.ai_config import AIConfig, ConversationHistory
-from ..models.whatsapp import WhatsAppMessage
 from ..models.customer import Customer
 from ..models.user import User
 from ..services.gemini import GeminiService
@@ -64,10 +63,6 @@ async def generate_ai_reply(
         prompt_template=prompt_template,
         temperature=temperature,
         max_tokens=max_tokens,
-    )
-
-    await db.execute(
-        select(WhatsAppMessage).where(WhatsAppMessage.id == -1)
     )
 
     ai_msg = ConversationHistory(

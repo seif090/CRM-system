@@ -56,9 +56,6 @@ async def mark_all_read(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    await db.execute(
-        select(Notification).where(Notification.user_id == current_user.id)
-    )
     result = await db.execute(
         select(Notification).where(Notification.user_id == current_user.id, Notification.is_read == 0)
     )

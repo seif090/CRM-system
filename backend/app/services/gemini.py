@@ -5,13 +5,14 @@ from ..core.config import settings
 class GeminiService:
     def __init__(self):
         self.api_key = settings.GEMINI_API_KEY
-        self.client = None
+        self.model = None
         if self.api_key:
             try:
-                from google import genai
-                self.client = genai.Client(api_key=self.api_key)
+                import google.generativeai as genai
+                genai.configure(api_key=self.api_key)
+                self.model = genai.GenerativeModel("gemini-2.0-flash")
             except Exception:
-                self.client = None
+                self.model = None
 
     async def generate_reply(
         self,
@@ -22,8 +23,8 @@ class GeminiService:
         temperature: float = 0.7,
         max_tokens: int = 1024,
     ) -> str:
-        if not self.client:
-            return f"AI is not configured. Please set GEMINI_API_KEY in .env"
+        if not self.model:
+            return "AI is not configured. Please set GEMINI_API_KEY in .env"
 
         system_prompt = f"""{prompt_template}
 
@@ -41,21 +42,20 @@ Always respond professionally and helpfully in the same language the customer us
 Keep responses concise and actionable."""
 
         try:
-            chat = self.client.chats.create(
-                model="gemini-2.0-flash",
-                config={
-                    "system_instruction": system_prompt,
+            history = []
+            if conversation_history:
+                for msg in conversation_history:
+                    role = "user" if msg["role"] == "user" else "model"
+                    history.append({"role": role, "parts": [msg["message"]]})
+
+            chat = self.model.start_chat(history=history)
+            response = chat.send_message(
+                f"{system_prompt}\n\nCustomer message: {customer_message}",
+                generation_config={
                     "temperature": temperature,
                     "max_output_tokens": max_tokens,
                 },
             )
-
-            if conversation_history:
-                for msg in conversation_history:
-                    role = "user" if msg["role"] == "user" else "model"
-                    chat.send_message(f"{role}: {msg['message']}")
-
-            response = chat.send_message(customer_message)
             return response.text
         except Exception as e:
             return f"I apologize, but I'm having trouble processing your request. Please try again later. (Error: {str(e)})"

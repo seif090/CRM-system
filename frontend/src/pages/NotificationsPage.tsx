@@ -48,7 +48,7 @@ export default function NotificationsPage() {
               borderBottom: '1px solid',
               borderColor: 'divider',
             }}>
-              <ListItemIcon>{typeIcons[n.type] || <InfoIcon />}</ListItemIcon>
+              <ListItemIcon>{typeIcons[n.notification_type] || <InfoIcon />}</ListItemIcon>
               <ListItemText
                 primary={n.title}
                 secondary={`${n.message} - ${formatDateTime(n.created_at)}`}
@@ -58,7 +58,7 @@ export default function NotificationsPage() {
                   <CheckCircleIcon fontSize="small" />
                 </IconButton>
               )}
-              <Chip label={n.type} size="small" sx={{ ml: 1 }} />
+              <Chip label={n.notification_type} size="small" sx={{ ml: 1 }} />
             </ListItem>
           ))}
           {notifications.length === 0 && (

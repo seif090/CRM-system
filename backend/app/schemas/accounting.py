@@ -6,7 +6,7 @@ from datetime import datetime
 class AccountCreate(BaseModel):
     name: str
     code: str
-    type: str
+    account_type: str
     parent_id: Optional[int] = None
 
 
@@ -14,7 +14,7 @@ class AccountResponse(BaseModel):
     id: int
     name: str
     code: str
-    type: str
+    account_type: str
     parent_id: Optional[int] = None
     balance: int
 

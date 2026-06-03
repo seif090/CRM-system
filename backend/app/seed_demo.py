@@ -164,7 +164,7 @@ async def seed():
         for code, name, type_ in [("1000","الأصول","asset"),("1100","النقدية","asset"),
             ("2000","الخصوم","liability"),("3000","حقوق الملكية","equity"),
             ("4000","الإيرادات","revenue"),("5000","المصروفات","expense")]:
-            db.add(Account(code=code, name=name, type=type_))
+            db.add(Account(code=code, name=name, account_type=type_))
         print("✓ Chart of accounts created")
 
         for w in ["مخزن رئيسي", "مخزن فرعي"]:
@@ -194,8 +194,8 @@ async def seed():
                 created_at=today - timedelta(days=i)))
         print(f"✓ {15} demo sales created")
 
-        db.add(Notification(title="مرحباً بك!", message="تم إعداد النظام بنجاح!", type="success"))
-        db.add(Notification(title="تنبيه مخزون", message="بعض المنتجات وصلت للحد الأدنى.", type="warning"))
+        db.add(Notification(title="مرحباً بك!", message="تم إعداد النظام بنجاح!", notification_type="success"))
+        db.add(Notification(title="تنبيه مخزون", message="بعض المنتجات وصلت للحد الأدنى.", notification_type="warning"))
 
         await db.commit()
         print("\n✓✓✓ Demo data seeded successfully!")
