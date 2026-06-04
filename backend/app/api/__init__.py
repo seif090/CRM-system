@@ -35,6 +35,11 @@ from .calendar_api import router as calendar_router
 from .chat import router as chat_router
 from .documents import router as documents_router
 from .timetrack import router as timetrack_router
+from .manufacturing import router as manufacturing_router
+from .contracts import router as contracts_router
+from .knowledge import router as knowledge_router
+from .feedback import router as feedback_router
+from .subscriptions import router as subscriptions_router
 
 routers = [
     auth_router, customers_router, products_router, sales_router,
@@ -47,4 +52,6 @@ routers = [
     loyalty_router, import_export_router, printing_router, portal_router,
     tickets_router, pipeline_router, calendar_router,
     chat_router, documents_router, timetrack_router,
+    manufacturing_router, contracts_router, knowledge_router,
+    feedback_router, subscriptions_router,
 ]

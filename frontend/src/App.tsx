@@ -35,6 +35,11 @@ import CalendarPage from './pages/CalendarPage'
 import ChatPage from './pages/ChatPage'
 import DocumentsPage from './pages/DocumentsPage'
 import TimeTrackPage from './pages/TimeTrackPage'
+import Manufacturing from './pages/Manufacturing'
+import Contracts from './pages/Contracts'
+import KnowledgeBase from './pages/KnowledgeBase'
+import Feedback from './pages/Feedback'
+import Subscriptions from './pages/Subscriptions'
 import Layout from './components/Layout'
 import { useAuth } from './utils/auth'
 
@@ -82,6 +87,11 @@ export default function App() {
       <Route path="/chat" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
       <Route path="/documents" element={<PrivateRoute><DocumentsPage /></PrivateRoute>} />
       <Route path="/time-track" element={<PrivateRoute><TimeTrackPage /></PrivateRoute>} />
+      <Route path="/manufacturing" element={<PrivateRoute><Manufacturing /></PrivateRoute>} />
+      <Route path="/contracts" element={<PrivateRoute><Contracts /></PrivateRoute>} />
+      <Route path="/knowledge" element={<PrivateRoute><KnowledgeBase /></PrivateRoute>} />
+      <Route path="/feedback" element={<PrivateRoute><Feedback /></PrivateRoute>} />
+      <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
     </Routes>
   )
 }

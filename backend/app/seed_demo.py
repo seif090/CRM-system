@@ -21,6 +21,11 @@ from .models.whatsapp import WhatsAppTemplate
 from .models.ai_config import AIConfig
 from .models.notification import Notification
 from .models.leave import LeaveType
+from .models.manufacturing import BillOfMaterial, BOMItem, ProductionOrder
+from .models.contract import Contract
+from .models.knowledge import KnowledgeCategory, KnowledgeArticle
+from .models.feedback import FeedbackForm
+from .models.subscription import SubscriptionPlan, CustomerSubscription
 
 CUSTOMERS = [
     {"name": "أحمد محمد", "phone": "01001111111", "company": "شركة الأهرام"},
@@ -196,6 +201,41 @@ async def seed():
 
         db.add(Notification(title="مرحباً بك!", message="تم إعداد النظام بنجاح!", notification_type="success"))
         db.add(Notification(title="تنبيه مخزون", message="بعض المنتجات وصلت للحد الأدنى.", notification_type="warning"))
+
+        bom = BillOfMaterial(name="BOM-001 - شاشة LED", product_id=1, quantity=1, notes="تجميع شاشة LED", created_by=1)
+        db.add(bom)
+        await db.flush()
+        db.add(ProductionOrder(reference="MO-20260101-0001", bom_id=bom.id, quantity=5,
+            status="draft", notes="أمر إنتاج تجريبي", created_by=1))
+        print("✓ Manufacturing demo data created")
+
+        db.add(Contract(title="عقد صيانة سنوي", contract_type="customer", party_name="شركة الأهرام",
+            amount=25000, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=365),
+            status="active", notes="عقد صيانة شامل", created_by=1))
+        db.add(Contract(title="عقد توريد", contract_type="supplier", party_name="المورد الأولى",
+            amount=50000, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=180),
+            status="active", notes="توريد مواد خام", created_by=1))
+        print("✓ Contract demo data created")
+
+        kcat = KnowledgeCategory(name="إرشادات الاستخدام", description="كيفية استخدام النظام")
+        db.add(kcat)
+        await db.flush()
+        db.add(KnowledgeArticle(title="كيفية إضافة عميل جديد", content="من قائمة العملاء، اضغط على إضافة عميل جديد ثم املأ البيانات.",
+            category_id=kcat.id, tags="إرشادات,عملاء", is_published=1, created_by=1))
+        db.add(KnowledgeArticle(title="كيفية إنشاء فاتورة", content="من المبيعات، اختر فاتورة جديدة، أضف المنتجات ثم حفظ.",
+            category_id=kcat.id, tags="فواتير,مبيعات", is_published=1, created_by=1))
+        print("✓ Knowledge base demo data created")
+
+        db.add(FeedbackForm(title="رضا العملاء", description="استبيان قياس رضا العملاء عن الخدمة",
+            questions="""[{"q":"كيف تقيم خدمتنا؟","type":"stars"},{"q":"ما الذي يمكن تحسينه؟","type":"text"}]""", created_by=1))
+        print("✓ Feedback demo data created")
+
+        db.add(SubscriptionPlan(name="Basic", description="الباقة الأساسية", price=99, billing_cycle="monthly", max_users=5, max_storage=100))
+        db.add(SubscriptionPlan(name="Professional", description="الباقة المتقدمة", price=199, billing_cycle="monthly", max_users=25, max_storage=500))
+        db.add(SubscriptionPlan(name="Enterprise", description="الباقة المؤسسية", price=499, billing_cycle="monthly", max_users=999, max_storage=9999))
+        db.add(CustomerSubscription(customer_id=1, plan_id=2, status="active",
+            start_date=datetime.now(), end_date=datetime.now() + timedelta(days=30), auto_renew=1))
+        print("✓ Subscription demo data created")
 
         await db.commit()
         print("\n✓✓✓ Demo data seeded successfully!")

@@ -27,7 +27,11 @@ from .pipeline import PipelineStage, Deal
 from .calendar_events import CalendarEvent
 from .chat import ChatRoom, ChatRoomMember, ChatMessage
 from .document import Document, DocumentFolder
-from .timetrack import TimeEntry
+from .manufacturing import BillOfMaterial, BOMItem, ProductionOrder
+from .contract import Contract
+from .knowledge import KnowledgeCategory, KnowledgeArticle
+from .feedback import FeedbackForm, FeedbackResponse
+from .subscription import SubscriptionPlan, CustomerSubscription
 
 __all__ = [
     "User", "Customer", "Category", "Product",
@@ -54,4 +58,9 @@ __all__ = [
     "ChatRoom", "ChatRoomMember", "ChatMessage",
     "Document", "DocumentFolder",
     "TimeEntry",
+    "BillOfMaterial", "BOMItem", "ProductionOrder",
+    "Contract",
+    "KnowledgeCategory", "KnowledgeArticle",
+    "FeedbackForm", "FeedbackResponse",
+    "SubscriptionPlan", "CustomerSubscription",
 ]

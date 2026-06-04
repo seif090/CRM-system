@@ -330,3 +330,57 @@ export const timeTrackAPI = {
   create: (data: any) => API.post('/time-track', data),
   summary: (params?: any) => API.get('/time-track/summary', { params }),
 }
+
+export const manufacturingAPI = {
+  boms: {
+    list: () => API.get('/manufacturing/boms'),
+    create: (data: any) => API.post('/manufacturing/boms', data),
+  },
+  orders: {
+    list: (params?: any) => API.get('/manufacturing/orders', { params }),
+    create: (data: any) => API.post('/manufacturing/orders', data),
+    updateStatus: (id: number, status: string) => API.put(`/manufacturing/orders/${id}/status?status=${status}`),
+  },
+}
+
+export const contractsAPI = {
+  list: (params?: any) => API.get('/contracts', { params }),
+  create: (data: any) => API.post('/contracts', data),
+  update: (id: number, data: any) => API.put(`/contracts/${id}`, data),
+  delete: (id: number) => API.delete(`/contracts/${id}`),
+}
+
+export const knowledgeAPI = {
+  categories: {
+    list: () => API.get('/knowledge/categories'),
+    create: (data: any) => API.post('/knowledge/categories', data),
+  },
+  articles: {
+    list: (params?: any) => API.get('/knowledge/articles', { params }),
+    get: (id: number) => API.get(`/knowledge/articles/${id}`),
+    create: (data: any) => API.post('/knowledge/articles', data),
+  },
+}
+
+export const feedbackAPI = {
+  forms: {
+    list: () => API.get('/feedback/forms'),
+    create: (data: any) => API.post('/feedback/forms', data),
+  },
+  responses: {
+    list: (params?: any) => API.get('/feedback/responses', { params }),
+    submit: (data: any) => API.post('/feedback/responses', data),
+  },
+}
+
+export const subscriptionsAPI = {
+  plans: {
+    list: () => API.get('/subscriptions/plans'),
+    create: (data: any) => API.post('/subscriptions/plans', data),
+  },
+  customers: {
+    list: () => API.get('/subscriptions/customers'),
+    create: (data: any) => API.post('/subscriptions/customers', data),
+    updateStatus: (id: number, status: string) => API.put(`/subscriptions/customers/${id}/status?status=${status}`),
+  },
+}

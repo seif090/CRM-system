@@ -45,6 +45,10 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import FolderIcon from '@mui/icons-material/Folder'
 import TimerIcon from '@mui/icons-material/Timer'
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing'
+import DescriptionIcon from '@mui/icons-material/Description'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import { notificationsAPI } from '../services/api'
 
 const drawerWidth = 280
@@ -85,6 +89,11 @@ const menuItems = [
   { text: 'المحادثات', icon: <ChatBubbleIcon />, path: '/chat' },
   { text: 'المستندات', icon: <FolderIcon />, path: '/documents' },
   { text: 'تسجيل الوقت', icon: <TimerIcon />, path: '/time-track' },
+  { text: 'التصنيع (MRP)', icon: <PrecisionManufacturingIcon />, path: '/manufacturing' },
+  { text: 'العقود', icon: <DescriptionIcon />, path: '/contracts' },
+  { text: 'قاعدة المعرفة', icon: <MenuBookIcon />, path: '/knowledge' },
+  { text: 'الاستبيانات', icon: <ThumbUpIcon />, path: '/feedback' },
+  { text: 'الاشتراكات', icon: <SubscriptionsIcon />, path: '/subscriptions' },
 ]
 
 const bottomNavItems = [
