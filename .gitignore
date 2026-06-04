@@ -14,3 +14,7 @@ dist/
 *.zip
 desktop/dist/
 desktop/node_modules/
+mobile/android/
+mobile/node_modules/
+mobile/.capacitor/
+*.apk

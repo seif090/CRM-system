@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import {
   AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItem,
   ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography,
-  Button, Divider, Badge,
+  Button, Divider, Badge, BottomNavigation, BottomNavigationAction, Paper,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -36,6 +36,9 @@ import CardGiftcardIcon from '@mui/icons-material/CardGiftcard'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import PrintIcon from '@mui/icons-material/Print'
 import PersonIcon from '@mui/icons-material/Person'
+import HomeIcon from '@mui/icons-material/Home'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import SettingsIcon from '@mui/icons-material/Settings'
 import { notificationsAPI } from '../services/api'
 
 const drawerWidth = 280
@@ -72,8 +75,17 @@ const menuItems = [
   { text: 'الصلاحيات', icon: <SecurityIcon />, path: '/settings' },
 ]
 
+const bottomNavItems = [
+  { label: 'الرئيسية', icon: <HomeIcon />, path: '/' },
+  { label: 'المبيعات', icon: <PointOfSaleIcon />, path: '/sales' },
+  { label: 'العملاء', icon: <PeopleIcon />, path: '/customers' },
+  { label: 'المخزون', icon: <InventoryIcon />, path: '/products' },
+  { label: 'المزيد', icon: <MenuBookIcon />, path: '' },
+]
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const navigate = useNavigate()
   const location = useLocation()
@@ -95,7 +107,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               selected={location.pathname === item.path}
-              onClick={() => { navigate(item.path); setMobileOpen(false) }}
+              onClick={() => { navigate(item.path); setMobileOpen(false); setDrawerOpen(false) }}
             >
               <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.main' : undefined }}>
                 {item.text === 'الإشعارات' && unreadCount > 0 ? (
@@ -111,14 +123,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   )
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', pb: { xs: 7, md: 0 } }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ width: { md: `calc(100% - ${drawerWidth}px)` }, ml: { md: `${drawerWidth}px` } }}>
         <Toolbar>
           <IconButton color="inherit" edge="start" onClick={() => setMobileOpen(!mobileOpen)} sx={{ mr: 2, display: { md: 'none' } }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1, fontSize: { xs: 16, md: 20 } }}>
             {menuItems.find((m) => m.path === location.pathname)?.text || 'ERP & CRM'}
           </Typography>
           <IconButton color="inherit" onClick={() => navigate('/notifications')}>
@@ -126,11 +138,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Button color="inherit" startIcon={<LogoutIcon />} onClick={() => { localStorage.clear(); navigate('/login') }}>
+          <Button color="inherit" startIcon={<LogoutIcon />} onClick={() => { localStorage.clear(); navigate('/login') }} sx={{ display: { xs: 'none', md: 'inline-flex' } }}>
             تسجيل خروج
           </Button>
         </Toolbar>
       </AppBar>
+
       <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
         <Drawer
           variant="temporary"
@@ -148,9 +161,61 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
+
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, mt: 8, mb: { xs: 7, md: 0 }, minHeight: '100vh' }}>
         {children}
       </Box>
+
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1100, display: { md: 'none' } }} elevation={3}>
+        <BottomNavigation
+          showLabels
+          value={bottomNavItems.findIndex((i) => i.path === location.pathname)}
+          onChange={(_, idx) => {
+            const item = bottomNavItems[idx]
+            if (item.path) {
+              navigate(item.path)
+            } else {
+              setDrawerOpen(!drawerOpen)
+            }
+          }}
+        >
+          {bottomNavItems.map((item) => (
+            <BottomNavigationAction
+              key={item.label}
+              label={item.label}
+              icon={item.label === 'الإشعارات' && unreadCount > 0 ? (
+                <Badge badgeContent={unreadCount} color="error">{item.icon}</Badge>
+              ) : item.icon}
+            />
+          ))}
+        </BottomNavigation>
+      </Paper>
+
+      <Drawer
+        anchor="bottom"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{ display: { md: 'none' } }}
+        PaperProps={{ sx: { maxHeight: '70vh', borderTopLeftRadius: 16, borderTopRightRadius: 16 } }}
+      >
+        <Box sx={{ p: 1 }}>
+          <List>
+            {menuItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  selected={location.pathname === item.path}
+                  onClick={() => { navigate(item.path); setDrawerOpen(false) }}
+                >
+                  <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.main' : undefined }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
     </Box>
   )
 }
