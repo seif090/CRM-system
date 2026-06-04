@@ -49,6 +49,23 @@ import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturi
 import DescriptionIcon from '@mui/icons-material/Description'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import SchoolIcon from '@mui/icons-material/School'
+import StarRateIcon from '@mui/icons-material/StarRate'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave'
+import BuildIcon from '@mui/icons-material/Build'
+import HandymanIcon from '@mui/icons-material/Handyman'
+import CelebrationIcon from '@mui/icons-material/Celebration'
+import CampaignIcon from '@mui/icons-material/Campaign'
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
+import ReceiptIcon from '@mui/icons-material/Receipt'
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket'
+import Inventory2Icon from '@mui/icons-material/Inventory2'
+import CardGiftcardIcon2 from '@mui/icons-material/CardGiftcard'
+import GroupWorkIcon from '@mui/icons-material/GroupWork'
 import { notificationsAPI } from '../services/api'
 
 const drawerWidth = 280
@@ -94,6 +111,22 @@ const menuItems = [
   { text: 'قاعدة المعرفة', icon: <MenuBookIcon />, path: '/knowledge' },
   { text: 'الاستبيانات', icon: <ThumbUpIcon />, path: '/feedback' },
   { text: 'الاشتراكات', icon: <SubscriptionsIcon />, path: '/subscriptions' },
+  { text: 'التوظيف', icon: <GroupAddIcon />, path: '/recruitment' },
+  { text: 'التدريب', icon: <SchoolIcon />, path: '/training' },
+  { text: 'الأداء', icon: <StarRateIcon />, path: '/performance' },
+  { text: 'الجودة', icon: <CheckCircleIcon />, path: '/quality' },
+  { text: 'الأسطول', icon: <TimeToLeaveIcon />, path: '/fleet' },
+  { text: 'خدمة العملاء', icon: <BuildIcon />, path: '/service' },
+  { text: 'التأجير', icon: <HandymanIcon />, path: '/rentals' },
+  { text: 'التسويق', icon: <CampaignIcon />, path: '/marketing' },
+  { text: 'أنشطة CRM', icon: <SpeakerNotesIcon />, path: '/crm-activities' },
+  { text: 'التسوية البنكية', icon: <AccountBalanceIcon />, path: '/bank-rec' },
+  { text: 'الضرائب', icon: <ReceiptLongIcon />, path: '/tax' },
+  { text: 'الفواتير الدورية', icon: <ReceiptIcon />, path: '/recurring-invoices' },
+  { text: 'المشتريات (طلبات)', icon: <ShoppingBasketIcon />, path: '/procurement' },
+  { text: 'الدفعات / السيريالات', icon: <Inventory2Icon />, path: '/batch-serial' },
+  { text: 'بطاقات الهدايا', icon: <CardGiftcardIcon2 />, path: '/gift-cards' },
+  { text: 'العضويات', icon: <GroupWorkIcon />, path: '/memberships' },
 ]
 
 const bottomNavItems = [

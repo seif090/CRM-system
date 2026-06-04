@@ -40,6 +40,22 @@ import Contracts from './pages/Contracts'
 import KnowledgeBase from './pages/KnowledgeBase'
 import Feedback from './pages/Feedback'
 import Subscriptions from './pages/Subscriptions'
+import Recruitment from './pages/RecruitmentPage'
+import TrainingPage from './pages/TrainingPage'
+import PerformancePage from './pages/PerformancePage'
+import QualityPage from './pages/QualityPage'
+import FleetPage from './pages/FleetPage'
+import ServicePage from './pages/ServicePage'
+import RentalsPage from './pages/RentalsPage'
+import MarketingPage from './pages/MarketingPage'
+import CRMActivitiesPage from './pages/CRMActivitiesPage'
+import BankRecPage from './pages/BankRecPage'
+import TaxPage from './pages/TaxPage'
+import RecurringInvoicesPage from './pages/RecurringInvoicesPage'
+import ProcurementPage from './pages/ProcurementPage'
+import BatchSerialPage from './pages/BatchSerialPage'
+import GiftCardsPage from './pages/GiftCardsPage'
+import MembershipsPage from './pages/MembershipsPage'
 import Layout from './components/Layout'
 import { useAuth } from './utils/auth'
 
@@ -92,6 +108,22 @@ export default function App() {
       <Route path="/knowledge" element={<PrivateRoute><KnowledgeBase /></PrivateRoute>} />
       <Route path="/feedback" element={<PrivateRoute><Feedback /></PrivateRoute>} />
       <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+      <Route path="/recruitment" element={<PrivateRoute><Recruitment /></PrivateRoute>} />
+      <Route path="/training" element={<PrivateRoute><TrainingPage /></PrivateRoute>} />
+      <Route path="/performance" element={<PrivateRoute><PerformancePage /></PrivateRoute>} />
+      <Route path="/quality" element={<PrivateRoute><QualityPage /></PrivateRoute>} />
+      <Route path="/fleet" element={<PrivateRoute><FleetPage /></PrivateRoute>} />
+      <Route path="/service" element={<PrivateRoute><ServicePage /></PrivateRoute>} />
+      <Route path="/rentals" element={<PrivateRoute><RentalsPage /></PrivateRoute>} />
+      <Route path="/marketing" element={<PrivateRoute><MarketingPage /></PrivateRoute>} />
+      <Route path="/crm-activities" element={<PrivateRoute><CRMActivitiesPage /></PrivateRoute>} />
+      <Route path="/bank-rec" element={<PrivateRoute><BankRecPage /></PrivateRoute>} />
+      <Route path="/tax" element={<PrivateRoute><TaxPage /></PrivateRoute>} />
+      <Route path="/recurring-invoices" element={<PrivateRoute><RecurringInvoicesPage /></PrivateRoute>} />
+      <Route path="/procurement" element={<PrivateRoute><ProcurementPage /></PrivateRoute>} />
+      <Route path="/batch-serial" element={<PrivateRoute><BatchSerialPage /></PrivateRoute>} />
+      <Route path="/gift-cards" element={<PrivateRoute><GiftCardsPage /></PrivateRoute>} />
+      <Route path="/memberships" element={<PrivateRoute><MembershipsPage /></PrivateRoute>} />
     </Routes>
   )
 }

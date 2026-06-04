@@ -40,6 +40,22 @@ from .contracts import router as contracts_router
 from .knowledge import router as knowledge_router
 from .feedback import router as feedback_router
 from .subscriptions import router as subscriptions_router
+from .recruitment import router as recruitment_router
+from .training import router as training_router
+from .performance import router as performance_router
+from .quality import router as quality_router
+from .fleet import router as fleet_router
+from .service import router as service_router
+from .rentals import router as rentals_router
+from .marketing import router as marketing_router
+from .crm_activities import router as crm_activities_router
+from .bank_reconciliation import router as bank_rec_router
+from .tax import router as tax_router
+from .recurring_invoices import router as recurring_invoices_router
+from .procurement import router as procurement_router
+from .batch_serial import router as batch_serial_router
+from .gift_cards import router as gift_cards_router
+from .memberships import router as memberships_router
 
 routers = [
     auth_router, customers_router, products_router, sales_router,
@@ -54,4 +70,9 @@ routers = [
     chat_router, documents_router, timetrack_router,
     manufacturing_router, contracts_router, knowledge_router,
     feedback_router, subscriptions_router,
+    recruitment_router, training_router, performance_router,
+    quality_router, fleet_router, service_router, rentals_router,
+    marketing_router, crm_activities_router, bank_rec_router,
+    tax_router, recurring_invoices_router, procurement_router,
+    batch_serial_router, gift_cards_router, memberships_router,
 ]

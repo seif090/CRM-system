@@ -32,6 +32,22 @@ from .contract import Contract
 from .knowledge import KnowledgeCategory, KnowledgeArticle
 from .feedback import FeedbackForm, FeedbackResponse
 from .subscription import SubscriptionPlan, CustomerSubscription
+from .recruitment import JobPosting, Applicant, Interview
+from .training import Course, TrainingSession, Enrollment, Certificate
+from .performance import ReviewCycle, Review, PerformanceGoal, ReviewFeedback
+from .quality import QualityChecklist, QualityInspection, NonConformance
+from .fleet import Driver, Vehicle, VehicleMaintenance, FuelLog
+from .service import ServiceRequest, WorkOrder, ServiceSchedule
+from .rentals import RentalItem, RentalOrder, RentalContract
+from .marketing import Campaign, MarketingLead, EmailCampaign
+from .crm_activities import CallLog, Meeting, CRMNote
+from .bank_reconciliation import BankStatement, StatementLine, Reconciliation
+from .tax import TaxCode, TaxReturn
+from .recurring_invoice import RecurringInvoice, GeneratedInvoice
+from .procurement import PurchaseRequest, PurchaseRequestItem, RFQ, RFQResponse
+from .batch_serial import BatchNumber, SerialNumber, InventoryTracking
+from .gift_cards import GiftCard, GiftCardTransaction
+from .memberships import MembershipPlan, Member, MembershipVisit
 
 __all__ = [
     "User", "Customer", "Category", "Product",
@@ -63,4 +79,20 @@ __all__ = [
     "KnowledgeCategory", "KnowledgeArticle",
     "FeedbackForm", "FeedbackResponse",
     "SubscriptionPlan", "CustomerSubscription",
+    "JobPosting", "Applicant", "Interview",
+    "Course", "TrainingSession", "Enrollment", "Certificate",
+    "ReviewCycle", "Review", "PerformanceGoal", "ReviewFeedback",
+    "QualityChecklist", "QualityInspection", "NonConformance",
+    "Driver", "Vehicle", "VehicleMaintenance", "FuelLog",
+    "ServiceRequest", "WorkOrder", "ServiceSchedule",
+    "RentalItem", "RentalOrder", "RentalContract",
+    "Campaign", "MarketingLead", "EmailCampaign",
+    "CallLog", "Meeting", "CRMNote",
+    "BankStatement", "StatementLine", "Reconciliation",
+    "TaxCode", "TaxReturn",
+    "RecurringInvoice", "GeneratedInvoice",
+    "PurchaseRequest", "PurchaseRequestItem", "RFQ", "RFQResponse",
+    "BatchNumber", "SerialNumber", "InventoryTracking",
+    "GiftCard", "GiftCardTransaction",
+    "MembershipPlan", "Member", "MembershipVisit",
 ]

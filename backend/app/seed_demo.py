@@ -26,6 +26,22 @@ from .models.contract import Contract
 from .models.knowledge import KnowledgeCategory, KnowledgeArticle
 from .models.feedback import FeedbackForm
 from .models.subscription import SubscriptionPlan, CustomerSubscription
+from .models.recruitment import JobPosting, Applicant, Interview
+from .models.training import Course, TrainingSession, Enrollment
+from .models.performance import ReviewCycle, Review, PerformanceGoal
+from .models.quality import QualityChecklist, QualityInspection
+from .models.fleet import Driver, Vehicle, VehicleMaintenance, FuelLog
+from .models.service import ServiceRequest, WorkOrder, ServiceSchedule
+from .models.rentals import RentalItem, RentalOrder
+from .models.marketing import Campaign, MarketingLead
+from .models.crm_activities import CallLog, Meeting, CRMNote
+from .models.bank_reconciliation import BankStatement, Reconciliation
+from .models.tax import TaxCode, TaxReturn
+from .models.recurring_invoice import RecurringInvoice
+from .models.procurement import PurchaseRequest, RFQ
+from .models.batch_serial import BatchNumber, SerialNumber
+from .models.gift_cards import GiftCard
+from .models.memberships import MembershipPlan, Member
 
 CUSTOMERS = [
     {"name": "أحمد محمد", "phone": "01001111111", "company": "شركة الأهرام"},
@@ -236,6 +252,65 @@ async def seed():
         db.add(CustomerSubscription(customer_id=1, plan_id=2, status="active",
             start_date=datetime.now(), end_date=datetime.now() + timedelta(days=30), auto_renew=1))
         print("✓ Subscription demo data created")
+
+        db.add(JobPosting(title="مطور ERP", department="تقنية", description="تطوير نظام ERP", status="open", created_by=1))
+        db.add(JobPosting(title="محاسب", department="محاسبة", description="إدارة الحسابات", status="open", created_by=1))
+        print("✓ Recruitment demo data created")
+
+        c = Course(title="أساسيات ERP", description="دورة تدريبية عن النظام", duration_hours=8, max_participants=20, created_by=1)
+        db.add(c); await db.flush()
+        db.add(TrainingSession(course_id=c.id, instructor="مدرب 1", status="planned"))
+        print("✓ Training demo data created")
+
+        rc = ReviewCycle(name="مراجعة 2026", status="planned", created_by=1)
+        db.add(rc); await db.flush()
+        db.add(PerformanceGoal(employee_id=1, title="تحقيق المبيعات", progress=50))
+        print("✓ Performance demo data created")
+
+        db.add(QualityChecklist(name="فحص الجودة الأساسي", items="فحص المنتج,فحص التغليف", created_by=1))
+        print("✓ Quality control demo data created")
+
+        db.add(Driver(name="سائق 1", license_number="12345", phone="0111111111"))
+        db.add(Vehicle(plate_number="ABC123", model="Toyota 2025", status="active"))
+        print("✓ Fleet demo data created")
+
+        db.add(ServiceRequest(customer_id=1, title="صيانة جهاز", priority="high", status="open", assigned_to=1))
+        print("✓ Service demo data created")
+
+        db.add(RentalItem(name="مولد كهربائي", sku="GEN-001", daily_rate=500, quantity=3))
+        db.add(RentalItem(name="حفار", sku="EXC-001", daily_rate=2000, quantity=1))
+        print("✓ Rentals demo data created")
+
+        db.add(Campaign(name="حملة رمضان", type="seasonal", budget=10000, status="draft", created_by=1))
+        db.add(MarketingLead(campaign_id=1, name="عميل محتمل", source="موقع", score=80))
+        print("✓ Marketing demo data created")
+
+        db.add(CallLog(customer_id=1, employee_id=1, duration=120, outcome="مهتم بالمنتج"))
+        db.add(Meeting(title="اجتماع مع عميل", employee_id=1, status="scheduled"))
+        db.add(CRMNote(customer_id=1, employee_id=1, content="ملاحظة: العميل يريد خصم"))
+        print("✓ CRM Activities demo data created")
+
+        db.add(TaxCode(name="ضريبة القيمة المضافة", rate=15, type="sales"))
+        db.add(TaxCode(name="ضريبة صفرية", rate=0, type="sales"))
+        print("✓ Tax demo data created")
+
+        db.add(RecurringInvoice(customer_id=1, frequency="monthly", interval_value=1, start_date=today, next_date=today, created_by=1))
+        print("✓ Recurring invoices demo data created")
+
+        db.add(PurchaseRequest(title="توريد قرطاسية", requestor_id=1, department="إدارة", status="draft"))
+        db.add(RFQ(title="طلب عرض سعر للقرطاسية", issue_date=today, due_date=today + timedelta(days=7), status="draft", created_by=1))
+        print("✓ Procurement demo data created")
+
+        db.add(BatchNumber(product_id=1, batch_number="BATCH-001", quantity=100))
+        db.add(SerialNumber(product_id=1, serial_number="SN-001-00001"))
+        print("✓ Batch/Serial demo data created")
+
+        db.add(GiftCard(card_number="GC-001", initial_balance=500, current_balance=500, issue_date=today))
+        print("✓ Gift cards demo data created")
+
+        db.add(MembershipPlan(name="عضوية ذهبية", price=299, duration_days=365, max_visits=50))
+        db.add(Member(customer_id=1, plan_id=1, start_date=today, end_date=today + timedelta(days=365), status="active"))
+        print("✓ Memberships demo data created")
 
         await db.commit()
         print("\n✓✓✓ Demo data seeded successfully!")

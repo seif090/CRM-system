@@ -384,3 +384,98 @@ export const subscriptionsAPI = {
     updateStatus: (id: number, status: string) => API.put(`/subscriptions/customers/${id}/status?status=${status}`),
   },
 }
+
+export const recruitmentAPI = {
+  jobs: { list: () => API.get('/recruitment/jobs'), create: (data: any) => API.post('/recruitment/jobs', data) },
+  applicants: { list: () => API.get('/recruitment/applicants'), create: (data: any) => API.post('/recruitment/applicants', data), updateStatus: (id: number, s: string) => API.put(`/recruitment/applicants/${id}/status?status=${s}`) },
+  interviews: { list: () => API.get('/recruitment/interviews'), create: (data: any) => API.post('/recruitment/interviews', data) },
+}
+
+export const trainingAPI = {
+  courses: { list: () => API.get('/training/courses'), create: (data: any) => API.post('/training/courses', data) },
+  sessions: { list: () => API.get('/training/sessions'), create: (data: any) => API.post('/training/sessions', data) },
+  enrollments: { list: () => API.get('/training/enrollments'), create: (sessionId: number, empId: number) => API.post(`/training/enrollments?session_id=${sessionId}&employee_id=${empId}`) },
+}
+
+export const performanceAPI = {
+  cycles: { list: () => API.get('/performance/cycles'), create: (data: any) => API.post('/performance/cycles', data) },
+  reviews: { list: () => API.get('/performance/reviews'), create: (data: any) => API.post('/performance/reviews', data) },
+  goals: { list: () => API.get('/performance/goals'), create: (data: any) => API.post('/performance/goals', data), updateProgress: (id: number, p: number) => API.put(`/performance/goals/${id}/progress?progress=${p}`) },
+}
+
+export const qualityAPI = {
+  checklists: { list: () => API.get('/quality/checklists'), create: (data: any) => API.post('/quality/checklists', data) },
+  inspections: { list: () => API.get('/quality/inspections'), create: (data: any) => API.post('/quality/inspections', data) },
+  nonConformance: { list: () => API.get('/quality/non-conformance') },
+}
+
+export const fleetAPI = {
+  drivers: { list: () => API.get('/fleet/drivers'), create: (data: any) => API.post('/fleet/drivers', data) },
+  vehicles: { list: () => API.get('/fleet/vehicles'), create: (data: any) => API.post('/fleet/vehicles', data) },
+  maintenance: { list: () => API.get('/fleet/maintenance'), create: (data: any) => API.post('/fleet/maintenance', data) },
+  fuel: { list: () => API.get('/fleet/fuel'), add: (vehicleId: number, liters: number, cpl: number, odo: number) => API.post(`/fleet/fuel?vehicle_id=${vehicleId}&liters=${liters}&cost_per_liter=${cpl}&odometer=${odo}`) },
+}
+
+export const serviceAPI = {
+  requests: { list: () => API.get('/service/requests'), create: (data: any) => API.post('/service/requests', data) },
+  workOrders: { list: () => API.get('/service/work-orders'), create: (data: any) => API.post('/service/work-orders', data), updateStatus: (id: number, s: string) => API.put(`/service/work-orders/${id}/status?status=${s}`) },
+  schedules: { list: () => API.get('/service/schedules') },
+}
+
+export const rentalsAPI = {
+  items: { list: () => API.get('/rentals/items'), create: (data: any) => API.post('/rentals/items', data) },
+  orders: { list: () => API.get('/rentals/orders'), create: (data: any) => API.post('/rentals/orders', data), updateStatus: (id: number, s: string) => API.put(`/rentals/orders/${id}/status?status=${s}`) },
+  contracts: { list: () => API.get('/rentals/contracts') },
+}
+
+export const marketingAPI = {
+  campaigns: { list: () => API.get('/marketing/campaigns'), create: (data: any) => API.post('/marketing/campaigns', data) },
+  leads: { list: () => API.get('/marketing/leads'), create: (data: any) => API.post('/marketing/leads', data), updateScore: (id: number, s: number) => API.put(`/marketing/leads/${id}/score?score=${s}`) },
+}
+
+export const crmActivitiesAPI = {
+  calls: { list: () => API.get('/crm-activities/calls'), create: (data: any) => API.post('/crm-activities/calls', data) },
+  meetings: { list: () => API.get('/crm-activities/meetings'), create: (data: any) => API.post('/crm-activities/meetings', data) },
+  notes: { list: (customerId?: number) => API.get('/crm-activities/notes', { params: { customer_id: customerId } }), create: (customerId: number, content: string) => API.post(`/crm-activities/notes?customer_id=${customerId}&content=${encodeURIComponent(content)}`) },
+}
+
+export const bankRecAPI = {
+  statements: { list: () => API.get('/bank-rec/statements'), create: (data: any) => API.post('/bank-rec/statements', data) },
+  reconciliations: { list: () => API.get('/bank-rec/reconciliations'), create: (statementId: number) => API.post(`/bank-rec/reconciliations?statement_id=${statementId}`) },
+}
+
+export const taxAPI = {
+  codes: { list: () => API.get('/tax/codes'), create: (data: any) => API.post('/tax/codes', data) },
+  returns: { list: () => API.get('/tax/returns'), create: (data: any) => API.post('/tax/returns', data) },
+}
+
+export const recurringInvoiceAPI = {
+  list: () => API.get('/recurring-invoices'),
+  create: (data: any) => API.post('/recurring-invoices', data),
+  generated: { list: () => API.get('/recurring-invoices/generated') },
+  generateNow: (id: number) => API.post(`/recurring-invoices/${id}/generate`),
+}
+
+export const procurementAPI = {
+  requests: { list: () => API.get('/procurement/requests'), create: (data: any) => API.post('/procurement/requests', data), updateStatus: (id: number, s: string) => API.put(`/procurement/requests/${id}/status?status=${s}`) },
+  rfqs: { list: () => API.get('/procurement/rfqs'), create: (data: any) => API.post('/procurement/rfqs', data) },
+}
+
+export const batchSerialAPI = {
+  batches: { list: () => API.get('/batch-serial/batches'), create: (data: any) => API.post('/batch-serial/batches', data) },
+  serials: { list: () => API.get('/batch-serial/serials'), create: (productId: number, sn: string, batchId?: number) => API.post(`/batch-serial/serials?product_id=${productId}&serial_number=${sn}${batchId ? `&batch_id=${batchId}` : ''}`) },
+  tracking: { list: () => API.get('/batch-serial/tracking') },
+}
+
+export const giftCardsAPI = {
+  list: () => API.get('/gift-cards'),
+  create: (data: any) => API.post('/gift-cards', data),
+  transactions: { list: () => API.get('/gift-cards/transactions') },
+  redeem: (id: number, amount: number) => API.post(`/gift-cards/${id}/redeem?amount=${amount}`),
+}
+
+export const membershipsAPI = {
+  plans: { list: () => API.get('/memberships/plans'), create: (data: any) => API.post('/memberships/plans', data) },
+  members: { list: () => API.get('/memberships/members'), create: (data: any) => API.post('/memberships/members', data) },
+  visits: { list: () => API.get('/memberships/visits') },
+}
