@@ -18,3 +18,12 @@ mobile/android/
 mobile/node_modules/
 mobile/.capacitor/
 *.apk
+*.exe
+*.dll
+*.pak
+*.dat
+v8_context_snapshot.bin
+snapshot_blob.bin
+LICENSE
+LICENSES.chromium.html
+locales/
