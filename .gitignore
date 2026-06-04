@@ -27,3 +27,6 @@ snapshot_blob.bin
 LICENSE
 LICENSES.chromium.html
 locales/
+desktop-wpf/bin/
+desktop-wpf/obj/
+*.DotSettings.user
