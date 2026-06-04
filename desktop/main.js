@@ -5,39 +5,61 @@ const fs = require('fs')
 const { URL } = require('url')
 
 const APP_URL = process.env.APP_URL
-const FRONTEND_DIST = path.join(__dirname, '..', 'frontend', 'dist')
+
+function findFrontendDist() {
+  const candidates = [
+    path.join(__dirname, '..', 'frontend', 'dist'),
+    path.join(__dirname, '..', '..', '..', 'frontend', 'dist'),
+    path.join(process.cwd(), 'frontend', 'dist'),
+    path.join(path.dirname(process.execPath), '..', 'frontend', 'dist'),
+  ]
+  for (const p of candidates) {
+    if (fs.existsSync(path.join(p, 'index.html'))) return p
+  }
+  return null
+}
+
+const FRONTEND_DIST = findFrontendDist()
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000'
 
 function serveDist(port = 3000) {
-  const mimeTypes = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff2': 'font/woff2' }
+  const mimeTypes = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.map': 'application/json' }
 
   const server = http.createServer((req, res) => {
     if (req.url.startsWith('/api')) {
-      const u = new URL(BACKEND_URL)
-      const opts = { hostname: u.hostname, port: u.port || 80, path: req.url, method: req.method, headers: { ...req.headers, host: u.host } }
-      const proxy = http.request(opts, (pres) => { res.writeHead(pres.statusCode, pres.headers); pres.pipe(res) })
-      proxy.on('error', () => { res.writeHead(502); res.end('Backend unavailable') })
-      req.pipe(proxy)
+      try {
+        const u = new URL(BACKEND_URL)
+        const opts = { hostname: u.hostname, port: parseInt(u.port) || 80, path: req.url, method: req.method, headers: { ...req.headers, host: u.host } }
+        const proxy = http.request(opts, (pres) => { res.writeHead(pres.statusCode, pres.headers); pres.pipe(res) })
+        proxy.on('error', () => { res.writeHead(502, { 'Content-Type': 'text/plain' }); res.end('Backend unavailable') })
+        req.pipe(proxy)
+      } catch (e) {
+        res.writeHead(502, { 'Content-Type': 'text/plain' }); res.end('Backend unavailable')
+      }
       return
     }
 
-    let filePath = path.join(FRONTEND_DIST, req.url === '/' ? 'index.html' : req.url)
-    const ext = path.extname(filePath)
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        fs.readFile(path.join(FRONTEND_DIST, 'index.html'), (err2, data2) => {
-          if (err2) { res.writeHead(500); res.end('Server error') }
-          else { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); res.end(data2) }
+    const urlPath = req.url.split('?')[0].split('#')[0]
+    let filePath = path.join(FRONTEND_DIST, urlPath === '/' ? 'index.html' : urlPath)
+
+    fs.stat(filePath, (err, stats) => {
+      if (err || !stats.isFile()) {
+        fs.readFile(path.join(FRONTEND_DIST, 'index.html'), (err2, data) => {
+          if (err2) { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Not found') }
+          else { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); res.end(data) }
         })
       } else {
-        res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' })
-        res.end(data)
+        const ext = path.extname(filePath)
+        fs.readFile(filePath, (err3, data) => {
+          if (err3) { res.writeHead(500); res.end('Error') }
+          else { res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' }); res.end(data) }
+        })
       }
     })
   })
 
   return new Promise((resolve, reject) => {
-    server.listen(port, () => resolve(`http://localhost:${port}`))
+    server.listen(port, '127.0.0.1', () => resolve(`http://127.0.0.1:${port}`))
     server.on('error', reject)
   })
 }
@@ -86,26 +108,34 @@ async function createWindow() {
 
   let targetUrl = APP_URL
 
-  if (!targetUrl) {
-    const distExists = fs.existsSync(path.join(FRONTEND_DIST, 'index.html'))
-    if (distExists) {
-      try {
-        targetUrl = await serveDist(3000)
-        console.log(`Serving frontend from ${FRONTEND_DIST}, proxying API to ${BACKEND_URL}`)
-      } catch (e) {
-        console.error('Failed to start local server:', e.message)
-      }
+  if (!targetUrl && FRONTEND_DIST) {
+    try {
+      targetUrl = await serveDist(3000)
+      console.log(`Serving frontend from ${FRONTEND_DIST}`)
+    } catch (e) {
+      console.error('Failed to start local server:', e.message)
     }
   }
+
+  win.webContents.on('did-fail-load', (e, code, desc) => {
+    console.error(`Page load failed: ${code} ${desc}`)
+    win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(errorHtml)}`)
+  })
+
+  win.webContents.on('console-message', (e, level, msg) => {
+    if (level >= 2) console.error(`[renderer] ${msg}`)
+  })
 
   if (targetUrl) {
     const reachable = await isServerReachable(targetUrl)
     if (reachable) {
       win.loadURL(targetUrl)
     } else {
+      console.error(`Server not reachable: ${targetUrl}`)
       win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(errorHtml)}`)
     }
   } else {
+    console.error('No server available. FRONTEND_DIST:', FRONTEND_DIST)
     win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(errorHtml)}`)
   }
 
