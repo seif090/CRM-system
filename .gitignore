@@ -11,3 +11,6 @@ dist/
 *.session
 .DS_Store
 *.db
+*.zip
+desktop/dist/
+desktop/node_modules/

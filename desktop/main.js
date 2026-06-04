@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
-const isDev = process.env.NODE_ENV === 'development'
+const APP_URL = process.env.APP_URL || 'http://localhost:3000'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -18,11 +18,10 @@ function createWindow() {
     },
   })
 
-  if (isDev) {
-    win.loadURL('http://localhost:3000')
+  win.loadURL(APP_URL)
+
+  if (process.env.NODE_ENV === 'development') {
     win.webContents.openDevTools()
-  } else {
-    win.loadURL('http://localhost:3000')
   }
 }
 

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP & CRM System - Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Cairo', sans-serif; background: #0f172a; color: #fff; overflow: hidden; height: 100vh; }
+  .slide { display: none; width: 100vw; height: 100vh; padding: 40px 60px; position: absolute; top: 0; left: 0; }
+  .slide.active { display: flex; flex-direction: column; }
+  .bg-gradient { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+  .content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; }
+  /* Slide 0 - Intro */
+  #slide-0 { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%); justify-content: center; align-items: center; text-align: center; }
+  #slide-0 .logo { font-size: 80px; margin-bottom: 20px; }
+  #slide-0 h1 { font-size: 56px; font-weight: 900; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  #slide-0 h2 { font-size: 24px; color: #94a3b8; margin-top: 10px; font-weight: 400; }
+  #slide-0 .badge { display: inline-block; background: rgba(96,165,250,0.15); color: #60a5fa; padding: 8px 24px; border-radius: 50px; margin-top: 30px; font-size: 16px; border: 1px solid rgba(96,165,250,0.3); }
+  #slide-0 .features-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; max-width: 900px; margin: 40px auto 0; width: 100%; }
+  #slide-0 .feat { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px 12px; text-align: center; }
+  #slide-0 .feat .icon { font-size: 32px; }
+  #slide-0 .feat .name { font-size: 13px; color: #cbd5e1; margin-top: 8px; }
+  /* Slide template */
+  .slide-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .slide-header .num { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; }
+  .slide-header h2 { font-size: 32px; font-weight: 700; }
+  .slide-header .sub { color: #94a3b8; font-size: 14px; margin-right: auto; }
+  .demo-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; flex: 1; min-height: 0; }
+  .demo-sidebar { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; }
+  .demo-sidebar .item { padding: 10px 14px; border-radius: 10px; color: #94a3b8; font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+  .demo-sidebar .item.active { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .demo-main { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; }
+  .demo-toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .demo-toolbar .btn { padding: 8px 18px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; font-family: 'Cairo', sans-serif; font-size: 13px; cursor: default; }
+  .demo-toolbar .btn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .demo-table { width: 100%; border-collapse: collapse; }
+  .demo-table th { text-align: right; padding: 12px 8px; color: #64748b; font-weight: 400; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .demo-table td { padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; }
+  .demo-table .status { display: inline-block; padding: 2px 12px; border-radius: 50px; font-size: 12px; }
+  .demo-table .status.green { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .demo-table .status.yellow { background: rgba(234,179,8,0.15); color: #eab308; }
+  .demo-table .status.blue { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .demo-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; }
+  .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; margin-bottom: 20px; }
+  .stat-card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; }
+  .stat-card .val { font-size: 28px; font-weight: 700; }
+  .stat-card .lbl { color: #64748b; font-size: 13px; }
+  .stat-card .icon { font-size: 32px; margin-bottom: 8px; }
+  .chart-placeholder { height: 200px; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #475569; position: relative; overflow: hidden; }
+  .chart-placeholder .bar { position: absolute; bottom: 20px; width: 30px; border-radius: 6px 6px 0 0; }
+  /* Navigation */
+  .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 16px; background: rgba(15,23,42,0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); padding: 12px 24px; border-radius: 60px; }
+  .nav-bar button { background: rgba(255,255,255,0.08); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; font-size: 20px; cursor: pointer; font-family: 'Cairo', sans-serif; transition: all 0.2s; }
+  .nav-bar button:hover { background: rgba(96,165,250,0.2); }
+  .nav-bar .counter { color: #64748b; font-size: 14px; min-width: 60px; text-align: center; }
+  .nav-bar .play-btn { background: #2563eb; color: #fff; padding: 0 28px; border-radius: 40px; width: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .nav-bar .play-btn:hover { background: #1d4ed8; }
+  .progress-dots { display: flex; gap: 6px; }
+  .progress-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.3s; }
+  .progress-dots .dot.active { background: #60a5fa; width: 24px; border-radius: 4px; }
+  /* Slide 1 - Dashboard */
+  #slide-1 { background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 100%); }
+  #slide-2 { background: linear-gradient(135deg, #0f172a 0%, #1e1a2e 100%); }
+  #slide-3 { background: linear-gradient(135deg, #0f172a 0%, #1a1e2e 100%); }
+  #slide-4 { background: linear-gradient(135deg, #0f172a 0%, #2e1a1a 100%); }
+  #slide-5 { background: linear-gradient(135deg, #0f172a 0%, #1a2e1a 100%); }
+  #slide-6 { background: linear-gradient(135deg, #0f172a 0%, #2e1a2e 100%); }
+  #slide-7 { background: linear-gradient(135deg, #0f172a 0%, #1a2e2e 100%); }
+  #slide-8 { background: linear-gradient(135deg, #0f172a 0%, #2e2e1a 100%); }
+  #slide-9 { background: linear-gradient(135deg, #0f172a 0%, #1a1a3e 100%); }
+  #slide-10 { background: linear-gradient(135deg, #0f172a 0%, #2e1a1a 100%); }
+  /* Feature list */
+  .feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feature-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+  .feature-item .fi { font-size: 24px; }
+  .feature-item .fd { flex: 1; }
+  .feature-item .fd strong { display: block; font-size: 15px; }
+  .feature-item .fd small { color: #64748b; font-size: 12px; }
+  .kbd { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #94a3b8; }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .slide { padding: 20px; }
+    .demo-layout { grid-template-columns: 1fr; }
+    .slide-header h2 { font-size: 22px; }
+    .feature-list { grid-template-columns: 1fr; }
+    #slide-0 h1 { font-size: 32px; }
+    #slide-0 .features-grid { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 0: Intro -->
+<div class="slide active" id="slide-0">
+  <div class="content" style="align-items:center;justify-content:center">
+    <div class="logo">🏢</div>
+    <h1>ERP & CRM System</h1>
+    <h2>نظام متكامل لإدارة المؤسسات والعلاقات مع العملاء</h2>
+    <div class="badge">✨ مع الذكاء الاصطناعي والواتساب</div>
+    <div class="features-grid">
+      <div class="feat"><div class="icon">📊</div><div class="name">لوحة التحكم</div></div>
+      <div class="feat"><div class="icon">👥</div><div class="name">CRM</div></div>
+      <div class="feat"><div class="icon">📦</div><div class="name">المخزون</div></div>
+      <div class="feat"><div class="icon">💰</div><div class="name">المبيعات</div></div>
+      <div class="feat"><div class="icon">📋</div><div class="name">المشتريات</div></div>
+      <div class="feat"><div class="icon">🧑‍💼</div><div class="name">الموارد البشرية</div></div>
+      <div class="feat"><div class="icon">🤖</div><div class="name">الذكاء الاصطناعي</div></div>
+      <div class="feat"><div class="icon">💬</div><div class="name">واتساب</div></div>
+    </div>
+    <div style="margin-top:30px;color:#64748b;font-size:14px">👈 استخدم الأزرار في الأسفل للتنقل بين الشرائح</div>
+  </div>
+</div>
+
+<!-- Slide 1: Dashboard -->
+<div class="slide" id="slide-1">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#2563eb;color:#fff">١</div>
+      <h2>لوحة التحكم</h2>
+      <div class="sub">نظرة شاملة على الأداء</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">📊 لوحة التحكم</div>
+        <div class="item">👥 العملاء</div>
+        <div class="item">📦 المنتجات</div>
+        <div class="item">💰 المبيعات</div>
+        <div class="item">🧑‍💼 الموظفين</div>
+        <div class="item">📈 التقارير</div>
+        <div class="item">🤖 AI</div>
+      </div>
+      <div class="demo-main">
+        <div class="card-row">
+          <div class="stat-card"><div class="icon">💰</div><div class="val">١٢٨٬٤٥٠</div><div class="lbl">إجمالي المبيعات</div></div>
+          <div class="stat-card"><div class="icon">👥</div><div class="val">١٬٢٤٣</div><div class="lbl">العملاء</div></div>
+          <div class="stat-card"><div class="icon">📦</div><div class="val">٤٬٥٦٧</div><div class="lbl">المنتجات</div></div>
+          <div class="stat-card"><div class="icon">📋</div><div class="val">٣٤٢</div><div class="lbl">الطلبات</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1">
+          <div class="demo-card">
+            <div style="font-weight:600;margin-bottom:12px">📈 المبيعات (٣٠ يوم)</div>
+            <div class="chart-placeholder">
+              <div class="bar" style="height:40%;background:#2563eb;left:10%"></div>
+              <div class="bar" style="height:65%;background:#2563eb;left:25%"></div>
+              <div class="bar" style="height:50%;background:#2563eb;left:40%"></div>
+              <div class="bar" style="height:85%;background:#2563eb;left:55%"></div>
+              <div class="bar" style="height:70%;background:#2563eb;left:70%"></div>
+              <div class="bar" style="height:95%;background:#a78bfa;left:85%"></div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div style="font-weight:600;margin-bottom:12px">🏆 أفضل المنتجات</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>شاشة LED</span><span style="color:#22c55e">٤٥٢ وحدة</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>لاب توب Pro</span><span style="color:#22c55e">٢٣٨ وحدة</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>سماعة بلوتوث</span><span style="color:#22c55e">٨٩٠ وحدة</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;font-size:13px;color:#94a3b8">
+          ⚡ آخر النشاطات: تم إضافة فاتورة جديدة رقم INV-0042 | تم تحديث مخزون المنتج SCR-001
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: CRM -->
+<div class="slide" id="slide-2">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#7c3aed;color:#fff">٢</div>
+      <h2>إدارة العملاء (CRM)</h2>
+      <div class="sub">قاعدة بيانات العملاء وتاريخ التعاملات</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">👥 العملاء</div>
+        <div class="item">➕ إضافة عميل</div>
+        <div class="item">📞 سجل التواصل</div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-toolbar">
+          <span class="btn primary">➕ إضافة عميل</span>
+          <span class="btn">📥 تصدير</span>
+          <span class="btn">🔍 بحث</span>
+        </div>
+        <table class="demo-table">
+          <tr><th>الاسم</th><th>رقم الهاتف</th><th>الشركة</th><th>المشتريات</th><th>الحالة</th></tr>
+          <tr><td>أحمد محمد</td><td>٠١٠٠١١١١١١١</td><td>شركة الأهرام</td><td>١٥ عملية</td><td><span class="status green">نشط</span></td></tr>
+          <tr><td>سارة علي</td><td>٠١٠٠٢٢٢٢٢٢٢</td><td>مكتبة النيل</td><td>٨ عمليات</td><td><span class="status green">نشط</span></td></tr>
+          <tr><td>محمد حسين</td><td>٠١٠٠٣٣٣٣٣٣٣</td><td>مصنع النور</td><td>٢٢ عملية</td><td><span class="status blue">مميز</span></td></tr>
+          <tr><td>فاطمة أحمد</td><td>٠١٠٠٤٤٤٤٤٤٤٤</td><td>شركة الهدى</td><td>٣ عمليات</td><td><span class="status yellow">جديد</span></td></tr>
+        </table>
+        <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px">
+            <div style="font-size:13px;color:#94a3b8">📊 برنامج الولاء</div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between">
+              <span>🥇 ذهبي</span><span style="color:#eab308">١٢ عميل</span>
+            </div>
+            <div><span>🥈 فضي</span><span style="color:#94a3b8"> ٣٤ عميل</span></div>
+            <div><span>🥉 برونزي</span><span style="color:#cd7f32"> ٥٦ عميل</span></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:14px">
+            <div style="font-size:13px;color:#94a3b8">💬 واتساب مدمج</div>
+            <div style="font-size:13px;margin-top:8px">إرسال رسائل تلقائية ✓<br>قوالب جاهزة ✓<br>سجل المحادثات ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: POS -->
+<div class="slide" id="slide-3">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#059669;color:#fff">٣</div>
+      <h2>نقطة البيع (POS)</h2>
+      <div class="sub">واجهة كاشير سريعة</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">🛒 نقطة البيع</div>
+        <div class="item">📄 الفواتير</div>
+      </div>
+      <div class="demo-main">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1">
+          <div>
+            <div style="font-weight:600;margin-bottom:10px">🔍 اختيار المنتجات</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+              <div style="background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:12px;text-align:center;cursor:default">
+                <div style="font-size:12px;color:#60a5fa;font-weight:600">شاشة LED 55"</div>
+                <div style="font-size:18px;font-weight:700">١٢٬٠٠٠</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;text-align:center;cursor:default">
+                <div style="font-size:12px">سماعة بلوتوث</div>
+                <div style="font-size:18px;font-weight:700">٥٠٠</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;text-align:center;cursor:default">
+                <div style="font-size:12px">ماوس لاسلكي</div>
+                <div style="font-size:18px;font-weight:700">٢٠٠</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;text-align:center;cursor:default">
+                <div style="font-size:12px">تيشيرت قطني</div>
+                <div style="font-size:18px;font-weight:700">١٥٠</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:16px">
+            <div style="font-weight:600;margin-bottom:10px">🧾 الفاتورة الحالية</div>
+            <div style="font-size:13px">
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+                <span>شاشة LED × ١</span><span>١٢٬٠٠٠ ج.م</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+                <span>سماعة × ٢</span><span>١٬٠٠٠ ج.م</span>
+              </div>
+            </div>
+            <div style="margin-top:auto;border-top:2px solid rgba(255,255,255,0.1);padding-top:12px">
+              <div style="display:flex;justify-content:space-between;font-size:20px;font-weight:700">
+                <span>المجموع</span><span style="color:#22c55e">١٣٬٠٠٠ ج.م</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <span class="btn primary" style="flex:1;text-align:center">💳 إتمام البيع</span>
+                <span class="btn" style="flex:1;text-align:center">🧹 تفريغ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Inventory -->
+<div class="slide" id="slide-4">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#dc2626;color:#fff">٤</div>
+      <h2>المخزون والمستودعات</h2>
+      <div class="sub">إدارة متكاملة للمخزون</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">📦 المنتجات</div>
+        <div class="item">🏭 المستودعات</div>
+        <div class="item">🔄 حركات المخزون</div>
+        <div class="item">⚠️ تنبيهات</div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-toolbar">
+          <span class="btn primary">➕ إضافة منتج</span>
+          <span class="btn">🏭 تحويل مخزني</span>
+          <span class="btn">📊 جرد</span>
+        </div>
+        <table class="demo-table">
+          <tr><th>المنتج</th><th>SKU</th><th>المخزون</th><th>السعر</th><th>المستودع</th></tr>
+          <tr><td>شاشة LED 55 بوصة</td><td>SCR-001</td><td>١٠</td><td>١٢٬٠٠٠ ج.م</td><td>مخزن رئيسي</td></tr>
+          <tr><td>سماعة بلوتوث</td><td>BT-001</td><td><span style="color:#eab308">٥٠</span></td><td>٥٠٠ ج.م</td><td>مخزن رئيسي</td></tr>
+          <tr><td>لاب توب Pro</td><td>LPT-001</td><td>٨</td><td>٢٢٬٠٠٠ ج.م</td><td>مخزن فرعي</td></tr>
+          <tr><td>زيت زيتون</td><td>OIL-001</td><td><span style="color:#22c55e">٥٠٠</span></td><td>٨٠ ج.م</td><td>مخزن رئيسي</td></tr>
+        </table>
+        <div style="margin-top:12px;display:flex;gap:8px;font-size:13px">
+          <span style="color:#22c55e">🟢 متوفر</span>
+          <span style="color:#eab308">🟡 منخفض</span>
+          <span style="color:#dc2626">🔴 ناقص</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: HR & Payroll -->
+<div class="slide" id="slide-5">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#ca8a04;color:#fff">٥</div>
+      <h2>الموارد البشرية والرواتب</h2>
+      <div class="sub">إدارة الموظفين والإجازات والرواتب</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">🧑‍💼 الموظفين</div>
+        <div class="item">🏖️ الإجازات</div>
+        <div class="item">💰 الرواتب</div>
+        <div class="item">📋 المهام</div>
+      </div>
+      <div class="demo-main">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div style="font-weight:600;margin-bottom:10px">🧑‍💼 الموظفون</div>
+            <div class="demo-card" style="padding:12px">
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0"><span>محمد علي</span><span>مدير مبيعات</span><span style="color:#22c55e">١٥٬٠٠٠</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0"><span>أحمد حسن</span><span>محاسب</span><span>١٠٬٠٠٠</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0"><span>سارة خالد</span><span>HR</span><span>٩٬٠٠٠</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0"><span>عمر محمود</span><span>مطور</span><span>١٨٬٠٠٠</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600;margin-bottom:10px">🏖️ الإجازات</div>
+            <div class="demo-card" style="padding:12px">
+              <div style="font-size:13px">إجازة سنوية: ٢١ يوم <span style="color:#22c55e">✓</span></div>
+              <div style="font-size:13px">إجازة مرضية: ٣٠ يوم <span style="color:#22c55e">✓</span></div>
+              <div style="font-size:13px">إجازة والدية: ٩٠ يوم <span style="color:#22c55e">✓</span></div>
+              <div style="margin-top:10px"><span class="btn primary" style="font-size:12px">➕ طلب إجازة</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: WhatsApp & AI -->
+<div class="slide" id="slide-6">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#0891b2;color:#fff">٦</div>
+      <h2>الذكاء الاصطناعي والواتساب</h2>
+      <div class="sub">أتمتة كاملة بدعم AI</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">🤖 AI Chat</div>
+        <div class="item">💬 واتساب</div>
+        <div class="item">📝 القوالب</div>
+        <div class="item">⚙️ الإعدادات</div>
+      </div>
+      <div class="demo-main">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1">
+          <div>
+            <div style="font-weight:600;margin-bottom:10px">🤖 مساعد AI ذكي</div>
+            <div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:14px;flex:1;display:flex;flex-direction:column;min-height:200px">
+              <div style="background:rgba(96,165,250,0.1);border-radius:10px;padding:10px;margin-bottom:8px;align-self:flex-start;max-width:80%;font-size:13px">
+                مرحباً! كيف أقدر أساعدك اليوم؟
+              </div>
+              <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;margin-bottom:8px;align-self:flex-end;max-width:80%;font-size:13px">
+                عاوز سعر شاشة LED
+              </div>
+              <div style="background:rgba(96,165,250,0.1);border-radius:10px;padding:10px;align-self:flex-start;max-width:80%;font-size:13px">
+                سعر شاشة LED 55 بوصة هو ١٢٬٠٠٠ ج.م والمتوفر ١٠ وحدات ✅
+              </div>
+              <div style="margin-top:auto;display:flex;gap:8px">
+                <span style="flex:1;background:rgba(255,255,255,0.06);border-radius:20px;padding:8px 14px;font-size:13px;color:#64748b">اكتب رسالتك هنا...</span>
+                <span style="background:#2563eb;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">➤</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600;margin-bottom:10px">💬 واتساب Business API</div>
+            <div class="demo-card" style="padding:14px">
+              <div style="font-size:13px">📱 إرسال رسائل تلقائية ✓</div>
+              <div style="font-size:13px">📋 ٣ قوالب رسائل جاهزة ✓</div>
+              <div style="font-size:13px">🤖 ردود تلقائية بالذكاء الاصطناعي ✓</div>
+              <div style="font-size:13px">📊 تقارير تفاعل ✓</div>
+              <div style="margin-top:12px;padding:8px;background:rgba(34,197,94,0.1);border-radius:8px;text-align:center;font-size:13px;color:#22c55e">
+                ✅ واتساب متصل
+              </div>
+            </div>
+            <div style="margin-top:12px">
+              <span class="btn primary" style="font-size:12px">🧠 تغيير شخصية AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Reports -->
+<div class="slide" id="slide-7">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#4f46e5;color:#fff">٧</div>
+      <h2>التقارير والتحليلات</h2>
+      <div class="sub">بيانات ورسوم بيانية متقدمة</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">📈 التقارير</div>
+        <div class="item">📊 المبيعات</div>
+        <div class="item">📉 المخزون</div>
+        <div class="item">🧾 المحاسبة</div>
+      </div>
+      <div class="demo-main">
+        <div class="card-row">
+          <div class="stat-card"><div class="lbl">📈 تقرير مبيعات</div><div class="val" style="font-size:20px">+٢٣٪</div></div>
+          <div class="stat-card"><div class="lbl">📊 أرباح الشهر</div><div class="val" style="font-size:20px">٣٢٬٥٠٠ ج.م</div></div>
+          <div class="stat-card"><div class="lbl">🧾 الفواتير</div><div class="val" style="font-size:20px">١٢٤</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1">
+          <div class="demo-card">
+            <div style="font-weight:600;font-size:14px;margin-bottom:8px">💾 تصدير</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span class="btn">📥 PDF</span>
+              <span class="btn">📥 Excel</span>
+              <span class="btn">📥 CSV</span>
+              <span class="btn">🖨️ طباعة</span>
+            </div>
+            <div style="margin-top:16px;font-size:13px;color:#94a3b8">
+              تقارير متاحة: مبيعات، مشتريات، مخزون، عملاء، محاسبة، أرباح
+            </div>
+          </div>
+          <div class="demo-card">
+            <div style="font-weight:600;font-size:14px;margin-bottom:8px">📋 المصروفات والميزانية</div>
+            <div style="font-size:13px">إجمالي المصروفات هذا الشهر: ٨٬٤٢٠ ج.م</div>
+            <div style="font-size:13px">الميزانية المتبقية: ٢٥٬١٨٠ ج.م</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Accounting & Shipping -->
+<div class="slide" id="slide-8">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#0d9488;color:#fff">٨</div>
+      <h2>محاسبة وشحن ومبيعات</h2>
+      <div class="sub">دورة كاملة من الطلب إلى التسليم</div>
+    </div>
+    <div class="demo-layout">
+      <div class="demo-sidebar">
+        <div class="item active">💰 المبيعات</div>
+        <div class="item">📦 المشتريات</div>
+        <div class="item">🚚 الشحن</div>
+        <div class="item">🧾 المحاسبة</div>
+        <div class="item">🔄 المرتجعات</div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-toolbar">
+          <span class="btn primary">➕ فاتورة جديدة</span>
+          <span class="btn">🚚 شحن</span>
+          <span class="btn">🔄 مرتجع</span>
+        </div>
+        <table class="demo-table">
+          <tr><th>الفاتورة</th><th>العميل</th><th>المبلغ</th><th>الحالة</th><th>الشحن</th></tr>
+          <tr><td>INV-0042</td><td>أحمد محمد</td><td>١٢٬٥٠٠ ج.م</td><td><span class="status green">مدفوع</span></td><td><span class="status blue">تم الشحن</span></td></tr>
+          <tr><td>INV-0043</td><td>سارة علي</td><td>٣٬٢٠٠ ج.م</td><td><span class="status yellow">معلق</span></td><td>🚚 قيد التوصيل</td></tr>
+          <tr><td>INV-0044</td><td>خالد عمر</td><td>٨٬٧٥٠ ج.م</td><td><span class="status green">مدفوع</span></td><td><span class="status green">تم التسليم</span></td></tr>
+        </table>
+        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px">
+            <div style="font-size:13px;font-weight:600">🧾 دورة المحاسبة</div>
+            <div style="font-size:12px;color:#94a3b8">قيود اليومية ← شجرة الحسابات ← ميزان المراجعة ← التقارير المالية</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px">
+            <div style="font-size:13px;font-weight:600">🚚 تتبع الشحنات</div>
+            <div style="font-size:12px;color:#94a3b8">حالة الشحنة: 📍 القاهرة ← تحت التوصيل</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: Extra Modules -->
+<div class="slide" id="slide-9">
+  <div class="content">
+    <div class="slide-header">
+      <div class="num" style="background:#d946ef;color:#fff">٩</div>
+      <h2>الوحدات الإضافية</h2>
+      <div class="sub">ميزات متقدمة للنظام</div>
+    </div>
+    <div class="feature-list" style="flex:1">
+      <div class="feature-item"><div class="fi">📧</div><div class="fd"><strong>البريد الإلكتروني</strong><small>SMTP - قوالب - سجل الإرسال</small></div></div>
+      <div class="feature-item"><div class="fi">💳</div><div class="fd"><strong>المدفوعات الإلكترونية</strong><small>Stripe - بوابات دفع متعددة</small></div></div>
+      <div class="feature-item"><div class="fi">🔑</div><div class="fd"><strong>الأصول الثابتة</strong><small>تتبع الأصول - الإهلاك - الصيانة</small></div></div>
+      <div class="feature-item"><div class="fi">📋</div><div class="fd"><strong>الميزانيات</strong><small>تخطيط - متابعة - انحرافات</small></div></div>
+      <div class="feature-item"><div class="fi">🏪</div><div class="fd"><strong>الفروع</strong><small>إدارة فروع متعددة - مخازن منفصلة</small></div></div>
+      <div class="feature-item"><div class="fi">🎫</div><div class="fd"><strong>الكوبونات</strong><small>خصومات - عروض - نقاط ولاء</small></div></div>
+      <div class="feature-item"><div class="fi">📥</div><div class="fd"><strong>استيراد/تصدير</strong><small>CSV - JSON - Excel</small></div></div>
+      <div class="feature-item"><div class="fi">🖨️</div><div class="fd"><strong>الطباعة</strong><small>فواتير PDF - باركود</small></div></div>
+      <div class="feature-item"><div class="fi">🔐</div><div class="fd"><strong>الصلاحيات</strong><small>أدوار - أذونات - سجل تدقيق</small></div></div>
+      <div class="feature-item"><div class="fi">🏠</div><div class="fd"><strong>بوابة العميل</strong><small>طلب - تتبع - فواتير</small></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: Tech Stack -->
+<div class="slide" id="slide-10">
+  <div class="content" style="justify-content:center;align-items:center;text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">⚡</div>
+    <h2 style="font-size:36px;font-weight:700">التقنيات المستخدمة</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:30px;max-width:700px">
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">🐍 Python FastAPI</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">⚛️ React + TypeScript</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">🎨 Material UI</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">🐘 PostgreSQL</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">📦 Redis</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">🐳 Docker</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">🤖 Google Gemini AI</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">💬 WhatsApp Business API</span>
+      <span style="background:rgba(255,255,255,0.06);padding:10px 20px;border-radius:10px;font-size:14px">⚡ Electron (Desktop)</span>
+    </div>
+    <div style="margin-top:40px;padding:24px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:16px;max-width:500px">
+      <div style="font-size:18px;font-weight:600">👨‍💼 بيانات الدخول التجريبية</div>
+      <div style="margin-top:12px;display:flex;justify-content:center;gap:24px;font-size:14px">
+        <div><span style="color:#64748b">المستخدم:</span> <strong>admin</strong></div>
+        <div><span style="color:#64748b">كلمة السر:</span> <strong>admin123</strong></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;color:#64748b;font-size:14px">
+      🚀 النظام جاهز للنشر على Render / Railway / VPS
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button id="prevBtn">◀</button>
+  <div class="progress-dots" id="dots"></div>
+  <span class="counter" id="counter">١ / ١٠</span>
+  <button id="nextBtn">▶</button>
+  <button class="play-btn" id="playBtn">▶ تشغيل تلقائي</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let autoPlay = false;
+  let autoTimer = null;
+
+  // Create dots
+  const dotsContainer = document.getElementById('dots');
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsContainer.appendChild(dot);
+  }
+
+  function showSlide(index) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === index));
+    document.getElementById('counter').textContent = `${index + ١} / ${total}`;
+  }
+
+  function next() {
+    if (current < total - 1) { current++; showSlide(current); }
+  }
+
+  function prev() {
+    if (current > 0) { current--; showSlide(current); }
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  document.getElementById('playBtn').addEventListener('click', function() {
+    autoPlay = !autoPlay;
+    this.textContent = autoPlay ? '⏸ إيقاف' : '▶ تشغيل تلقائي';
+    if (autoPlay) {
+      autoTimer = setInterval(() => {
+        if (current < total - 1) next();
+        else { current = 0; showSlide(0); }
+      }, 5000);
+    } else {
+      clearInterval(autoTimer);
+    }
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') prev();
+    if (e.key === 'ArrowLeft') next();
+    if (e.key === ' ') { e.preventDefault(); document.getElementById('playBtn').click(); }
+  });
+
+  // Touch
+  let touchX = 0;
+  document.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+  });
+</script>
+</body>
+</html>
