@@ -22,7 +22,12 @@ from .payment import PaymentGateway, PaymentTransaction
 from .asset import AssetCategory, Asset, AssetMaintenance
 from .budget import Budget, BudgetLine
 from .branch import Branch
-from .loyalty import LoyaltyTier, CustomerLoyalty, LoyaltyTransaction, Coupon
+from .ticket import Ticket, TicketMessage
+from .pipeline import PipelineStage, Deal
+from .calendar_events import CalendarEvent
+from .chat import ChatRoom, ChatRoomMember, ChatMessage
+from .document import Document, DocumentFolder
+from .timetrack import TimeEntry
 
 __all__ = [
     "User", "Customer", "Category", "Product",
@@ -43,4 +48,10 @@ __all__ = [
     "Budget", "BudgetLine",
     "Branch",
     "LoyaltyTier", "CustomerLoyalty", "LoyaltyTransaction", "Coupon",
+    "Ticket", "TicketMessage",
+    "PipelineStage", "Deal",
+    "CalendarEvent",
+    "ChatRoom", "ChatRoomMember", "ChatMessage",
+    "Document", "DocumentFolder",
+    "TimeEntry",
 ]

@@ -39,6 +39,12 @@ import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import SettingsIcon from '@mui/icons-material/Settings'
+import SupportIcon from '@mui/icons-material/Support'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
+import FolderIcon from '@mui/icons-material/Folder'
+import TimerIcon from '@mui/icons-material/Timer'
 import { notificationsAPI } from '../services/api'
 
 const drawerWidth = 280
@@ -73,13 +79,19 @@ const menuItems = [
   { text: 'طباعة', icon: <PrintIcon />, path: '/print' },
   { text: 'بوابة العميل', icon: <PersonIcon />, path: '/portal' },
   { text: 'الصلاحيات', icon: <SecurityIcon />, path: '/settings' },
+  { text: 'الدعم الفني', icon: <SupportIcon />, path: '/tickets' },
+  { text: 'المبيعات (Kanban)', icon: <TrendingUpIcon />, path: '/pipeline' },
+  { text: 'التقويم', icon: <CalendarMonthIcon />, path: '/calendar' },
+  { text: 'المحادثات', icon: <ChatBubbleIcon />, path: '/chat' },
+  { text: 'المستندات', icon: <FolderIcon />, path: '/documents' },
+  { text: 'تسجيل الوقت', icon: <TimerIcon />, path: '/time-track' },
 ]
 
 const bottomNavItems = [
   { label: 'الرئيسية', icon: <HomeIcon />, path: '/' },
-  { label: 'المبيعات', icon: <PointOfSaleIcon />, path: '/sales' },
-  { label: 'العملاء', icon: <PeopleIcon />, path: '/customers' },
-  { label: 'المخزون', icon: <InventoryIcon />, path: '/products' },
+  { label: 'نقاط البيع', icon: <PointOfSaleIcon2 />, path: '/pos' },
+  { label: 'المبيعات', icon: <AssessmentIcon />, path: '/sales' },
+  { label: 'المحادثات', icon: <ChatBubbleIcon />, path: '/chat' },
   { label: 'المزيد', icon: <MenuBookIcon />, path: '' },
 ]
 

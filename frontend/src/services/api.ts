@@ -272,3 +272,61 @@ export const portalAPI = {
   invoices: (phone: string) => API.get(`/portal/customer/${phone}/invoices`),
   loyalty: (phone: string) => API.get(`/portal/customer/${phone}/loyalty`),
 }
+
+export const ticketsAPI = {
+  list: (params?: any) => API.get('/tickets', { params }),
+  get: (id: number) => API.get(`/tickets/${id}`),
+  create: (data: any) => API.post('/tickets', data),
+  update: (id: number, data: any) => API.put(`/tickets/${id}`, data),
+  messages: {
+    list: (ticketId: number) => API.get(`/tickets/${ticketId}/messages`),
+    create: (ticketId: number, data: any) => API.post(`/tickets/${ticketId}/messages`, data),
+  },
+}
+
+export const pipelineAPI = {
+  stages: {
+    list: () => API.get('/pipeline/stages'),
+    create: (data: any) => API.post('/pipeline/stages', data),
+  },
+  deals: {
+    list: (stageId?: number) => API.get('/pipeline/deals', { params: { stage_id: stageId } }),
+    create: (data: any) => API.post('/pipeline/deals', data),
+    update: (id: number, data: any) => API.put(`/pipeline/deals/${id}`, data),
+    delete: (id: number) => API.delete(`/pipeline/deals/${id}`),
+  },
+}
+
+export const calendarAPI = {
+  list: (params?: any) => API.get('/calendar', { params }),
+  create: (data: any) => API.post('/calendar', data),
+  update: (id: number, data: any) => API.put(`/calendar/${id}`, data),
+  delete: (id: number) => API.delete(`/calendar/${id}`),
+}
+
+export const chatAPI = {
+  rooms: {
+    list: () => API.get('/chat/rooms'),
+    create: (data: any) => API.post('/chat/rooms', data),
+  },
+  messages: {
+    list: (roomId: number, params?: any) => API.get(`/chat/rooms/${roomId}/messages`, { params }),
+    send: (data: any) => API.post('/chat/messages', data),
+  },
+}
+
+export const documentsAPI = {
+  list: (params?: any) => API.get('/documents', { params }),
+  create: (data: any) => API.post('/documents', data),
+  delete: (id: number) => API.delete(`/documents/${id}`),
+  folders: {
+    list: () => API.get('/documents/folders'),
+    create: (data: any) => API.post('/documents/folders', data),
+  },
+}
+
+export const timeTrackAPI = {
+  list: (params?: any) => API.get('/time-track', { params }),
+  create: (data: any) => API.post('/time-track', data),
+  summary: (params?: any) => API.get('/time-track/summary', { params }),
+}

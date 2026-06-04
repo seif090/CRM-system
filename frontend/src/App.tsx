@@ -29,6 +29,12 @@ import LoyaltyPage from './pages/LoyaltyPage'
 import ImportExportPage from './pages/ImportExportPage'
 import PrintPage from './pages/PrintPage'
 import PortalPage from './pages/PortalPage'
+import TicketsPage from './pages/TicketsPage'
+import PipelinePage from './pages/PipelinePage'
+import CalendarPage from './pages/CalendarPage'
+import ChatPage from './pages/ChatPage'
+import DocumentsPage from './pages/DocumentsPage'
+import TimeTrackPage from './pages/TimeTrackPage'
 import Layout from './components/Layout'
 import { useAuth } from './utils/auth'
 
@@ -70,6 +76,12 @@ export default function App() {
       <Route path="/import-export" element={<PrivateRoute><ImportExportPage /></PrivateRoute>} />
       <Route path="/print" element={<PrivateRoute><PrintPage /></PrivateRoute>} />
       <Route path="/portal" element={<PrivateRoute><PortalPage /></PrivateRoute>} />
+      <Route path="/tickets" element={<PrivateRoute><TicketsPage /></PrivateRoute>} />
+      <Route path="/pipeline" element={<PrivateRoute><PipelinePage /></PrivateRoute>} />
+      <Route path="/calendar" element={<PrivateRoute><CalendarPage /></PrivateRoute>} />
+      <Route path="/chat" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
+      <Route path="/documents" element={<PrivateRoute><DocumentsPage /></PrivateRoute>} />
+      <Route path="/time-track" element={<PrivateRoute><TimeTrackPage /></PrivateRoute>} />
     </Routes>
   )
 }

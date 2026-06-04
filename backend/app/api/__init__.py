@@ -29,6 +29,12 @@ from .loyalty import router as loyalty_router
 from .import_export import router as import_export_router
 from .printing import router as printing_router
 from .customer_portal import router as portal_router
+from .tickets import router as tickets_router
+from .pipeline import router as pipeline_router
+from .calendar_api import router as calendar_router
+from .chat import router as chat_router
+from .documents import router as documents_router
+from .timetrack import router as timetrack_router
 
 routers = [
     auth_router, customers_router, products_router, sales_router,
@@ -39,4 +45,6 @@ routers = [
     shipping_router, email_router, leaves_router, payroll_router,
     payments_router, assets_router, budgets_router, branches_router,
     loyalty_router, import_export_router, printing_router, portal_router,
+    tickets_router, pipeline_router, calendar_router,
+    chat_router, documents_router, timetrack_router,
 ]
